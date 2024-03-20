@@ -16,7 +16,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Restore NuGet packages
-      run: nuget restore ./Background_Working_Startup_Toast.sln
+      run: nuget restore "Background Working Startup Toast.sln"
 
     - name: Build
       run: msbuild /p:Configuration=Release "Background Working Startup Toast.sln"
