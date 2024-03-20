@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET Core CI
+name: .NET Framework CI
 
 on:
   push:
@@ -10,22 +7,25 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
+    - name: Setup MSBuild path
+      uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Install dependencies
-      run: dotnet restore
+    - name: Restore NuGet packages
+      run: nuget restore Background_Working_Startup_Toast.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: msbuild /p:Configuration=Release Background_Working_Startup_Toast.sln
 
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    # If you have tests to run, uncomment the following lines
+    # - name: Setup VSTest.console
+    #   run: |
+    #     echo "Adding VSTest to PATH"
+    #     echo "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+    # - name: Run tests
+    #   run: vstest.console.exe YourTestProject.dll
